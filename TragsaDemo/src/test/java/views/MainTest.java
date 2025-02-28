@@ -8,7 +8,7 @@ class MainTest {
 
 	@Test
 	void test() {
-		assertTrue(true);
+		assertTrue(false);
 	}
 
 }

@@ -29,6 +29,4 @@ jobs:
           java-version: '23'
           distribution: 'temurin'
           cache: maven
-      - name: Build With Maven
-        run: mvn -B package --file pom.xml
           

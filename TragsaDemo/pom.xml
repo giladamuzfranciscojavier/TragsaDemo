@@ -3,4 +3,11 @@
   <groupId>TragsaDemo</groupId>
   <artifactId>TragsaDemo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter</artifactId>
+	    <version>5.12.0</version>
+	</dependency>
+  </dependencies>
 </project>

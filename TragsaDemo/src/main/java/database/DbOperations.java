@@ -78,8 +78,8 @@ public class DbOperations {
 					+ " proveedor_dni int NOT NULL,"
 					+ " cliente_dni int,"
 					+ " PRIMARY KEY (producto_id),"
-					+ " CONSTRAINT FK_Cliente FOREIGN KEY (cliente_dni) REFERENCES Cliente(cliente_dni),"
-					+ " CONSTRAINT FK_Proveedor FOREIGN KEY (proveedor_dni) REFERENCES Proveedor(proveedor_dni));");
+					+ " CONSTRAINT FK_Cliente FOREIGN KEY (cliente_dni) REFERENCES cliente(cliente_dni),"
+					+ " CONSTRAINT FK_Proveedor FOREIGN KEY (proveedor_dni) REFERENCES proveedor(proveedor_dni));");
 			System.out.println("Creadas todas las tablas");
 		} catch (SQLException e) {			
 			e.printStackTrace();

@@ -15,8 +15,8 @@ class DbOperationsTest {
 	
 	
 	//Además de preparar la base de datos de pruebas, comprueba que los métodos de conexión y generado de la base de datos funcionan correctamente
-	@BeforeAll	
-	void setupDB() {	
+	@BeforeAll
+	static void setupDB() {	
 		assertDoesNotThrow(() -> {			
 			return DbOperations.connect("127.0.0.1:3306", DbOperations.USER, DbOperations.PSWD);
 		}, "Error de Conexión");
@@ -26,8 +26,8 @@ class DbOperationsTest {
 	}
 	
 	@Test
-	void test() {
-		assertTrue(true);
+	void stub() {
+		
 	}
 	
 }

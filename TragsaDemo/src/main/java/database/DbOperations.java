@@ -62,10 +62,14 @@ public class DbOperations {
 					+ " nombre varchar(50),"
 					+ " PRIMARY KEY(cliente_dni))");
 			
+			System.out.println("Creada tabla cliente");
+			
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS proveedor("
 					+ "proveedor_dni int NOT NULL AUTO_INCREMENT, "
 					+ "nombre varchar(50), "
 					+ "PRIMARY KEY(proveedor_dni))");
+			
+			System.out.println("Creada tabla proveedor");
 			
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS producto ("
 					+ "producto_ID int NOT NULL AUTO_INCREMENT,"
@@ -76,6 +80,7 @@ public class DbOperations {
 					+ " PRIMARY KEY (producto_id),"
 					+ " CONSTRAINT FK_Cliente FOREIGN KEY (cliente_dni) REFERENCES Cliente(cliente_dni),"
 					+ " CONSTRAINT FK_Proveedor FOREIGN KEY (proveedor_dni) REFERENCES Proveedor(proveedor_dni));");
+			System.out.println("Creadas todas las tablas");
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return false;

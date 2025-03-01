@@ -148,6 +148,7 @@ public class DbOperations {
 			PreparedStatement ps;
 			if(cliente) {
 				if(proveedor) {
+					//Si se marcan ambos booleanos solo muestran aquellos usuarios que sean clientes Y proveedores
 					ps = conn.prepareStatement("SELECT * FROM cliente JOIN proveedor WHERE (cliente_dni=?)");
 					ps.setString(1, dni);
 					ResultSet rs = ps.executeQuery();

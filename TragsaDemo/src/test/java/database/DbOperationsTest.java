@@ -61,11 +61,20 @@ class DbOperationsTest {
 	
 	@Test
 	void ClienteProveedorCRUDTest() {
-		Usuario u = new ClienteProveedor("13579246A","Cetano");
-		assertTrue(DbOperations.createUpdateUsuario(true, true, u));
+		ClienteProveedor cp = new ClienteProveedor("13579246A","Cetano");
+		assertAll(
+				"Operaciones CRUD Cliente-Proveedor",
+				() -> assertTrue(DbOperations.createUpdateUsuario(true, true, cp)),
+				()-> assertTrue(DbOperations.readUsuario(true, true, cp.getDNI()).equals(cp)),
+				()-> assertTrue(DbOperations.createUpdateUsuario(true, true, new ClienteProveedor(cp.getDNI(), "Mengano"))),
+				()-> assertTrue(DbOperations.readUsuario(true, true, cp.getDNI()).getNombre().equals("Mengano")),
+				()-> assertTrue(DbOperations.deleteUsuario(true, true, cp.getDNI())),
+				()-> assertTrue(DbOperations.readUsuario(true, true, cp.getDNI())==null)
+				);
 	}
 	
 	
+	//Limpieza para futuras pruebas en local
 	@AfterAll
 	static void cleanDB() {
 		DbOperations.dropTestDB();

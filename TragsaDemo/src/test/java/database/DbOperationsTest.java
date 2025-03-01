@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.junit.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class DbOperationsTest {
@@ -15,7 +15,7 @@ class DbOperationsTest {
 	
 	
 	//Además de preparar la base de datos de pruebas, comprueba que los métodos de conexión y generado de la base de datos funcionan correctamente
-	@Before	
+	@BeforeAll	
 	void setupDB() {	
 		assertDoesNotThrow(() -> {			
 			return DbOperations.connect("127.0.0.1:3306", DbOperations.USER, DbOperations.PSWD);

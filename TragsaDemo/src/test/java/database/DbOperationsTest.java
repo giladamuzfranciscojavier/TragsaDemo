@@ -24,5 +24,4 @@ class DbOperationsTest {
 		assertTrue(DbOperations.generateDB(true));
 		
 	}
-
 }

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import database.DbOperations;
+import controllers.DBController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -110,7 +110,7 @@ public class DBLogin extends JDialog {
 				JButton okButton = new JButton("Aceptar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(DbOperations.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
+						if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
 							JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
 							dblogin.dispose();
 						}

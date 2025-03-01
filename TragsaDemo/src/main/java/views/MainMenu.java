@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controllers.DBController;
+
 import javax.swing.JButton;
 
 import java.awt.GridBagLayout;
@@ -15,8 +18,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 
-
-import database.DbOperations;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -77,7 +78,7 @@ public class MainMenu extends JFrame {
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Conexión por defecto");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(DbOperations.connect(DbOperations.URL,DbOperations.USER, DbOperations.PSWD)) {
+				if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD)) {
 					JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
 				}
 				else {

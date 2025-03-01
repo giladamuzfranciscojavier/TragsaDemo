@@ -15,7 +15,6 @@ class DbOperationsTest {
 	
 	
 	//Además de preparar la base de datos de pruebas, comprueba que los métodos de conexión y generado de la base de datos funcionan correctamente
-	@Before
 	@Test
 	void setupDB() {	
 		assertDoesNotThrow(() -> {			

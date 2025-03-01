@@ -1,5 +1,9 @@
 package models.usuarios;
 
-public class Cliente implements Usuario {
+public class Cliente extends Usuario {
 
+	public Cliente(String DNI, String nombre) {
+		super(DNI, nombre);
+	}
+	
 }

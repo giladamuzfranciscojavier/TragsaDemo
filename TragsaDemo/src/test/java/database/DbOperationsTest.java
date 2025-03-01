@@ -18,10 +18,11 @@ class DbOperationsTest {
 	@Test
 	void setupDB() {	
 		assertDoesNotThrow(() -> {			
-			return DbOperations.connect("127.0.0.1", DbOperations.USER, DbOperations.PSWD);
+			return DbOperations.connect("127.0.0.1:3306", DbOperations.USER, DbOperations.PSWD);
 		}, "Error de Conexión");
 		
 		assertTrue(DbOperations.generateDB(true));
 		
 	}
+	
 }

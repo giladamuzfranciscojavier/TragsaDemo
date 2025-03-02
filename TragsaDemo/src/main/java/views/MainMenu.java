@@ -25,6 +25,12 @@ public class MainMenu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JButton btnClientes = new JButton("Clientes");
+	private JButton btnProveedores = new JButton("Proveedores");
+	JButton btnProductos = new JButton("Productos");
+	JMenuItem menuProveedores = new JMenuItem("Proveedores");
+	JMenuItem menuClientes = new JMenuItem("Clientes");
+	JMenuItem menuProductos = new JMenuItem("Productos");
 
 	private static MainMenu frame = null;
 	
@@ -48,21 +54,37 @@ public class MainMenu extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 496, 270);
+		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("Tablas");
-		menuBar.add(mnNewMenu);
+		menuBar.add(mnNewMenu);		
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Clientes");
-		mnNewMenu.add(mntmNewMenuItem);
+		menuClientes.setEnabled(false);
+		menuClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnClientes.doClick();
+			}
+		});
+		mnNewMenu.add(menuClientes);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Proveedores");
-		mnNewMenu.add(mntmNewMenuItem_1);
+		menuProveedores.setEnabled(false);
+		menuProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnProveedores.doClick();
+			}
+		});
+		mnNewMenu.add(menuProveedores);		
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Productos");
-		mnNewMenu.add(mntmNewMenuItem_2);
+		menuProductos.setEnabled(false);
+		menuProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnProductos.doClick();
+			}
+		});
+		mnNewMenu.add(menuProductos);
 		
 		JMenu mnNewMenu_1 = new JMenu("Base de datos");
 		menuBar.add(mnNewMenu_1);
@@ -80,9 +102,11 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD)) {
 					JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
+					toggleEnabledButtons(true);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
+					toggleEnabledButtons(false);
 				}
 			}
 		});
@@ -98,20 +122,26 @@ public class MainMenu extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		JButton btnNewButton = new JButton("Clientes");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 1;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
 		
-		JButton btnProductos = new JButton("Productos");
+		btnClientes.setEnabled(false);
+		btnClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ClienteTableDialog(frame).setVisible(true);
+			}
+		});
+		GridBagConstraints gbc_btnClientes = new GridBagConstraints();
+		gbc_btnClientes.insets = new Insets(0, 0, 5, 5);
+		gbc_btnClientes.gridx = 1;
+		gbc_btnClientes.gridy = 1;
+		contentPane.add(btnClientes, gbc_btnClientes);
+		
+		btnProductos.setEnabled(false);
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
-		});
+		});		
 		
-		JButton btnProveedores = new JButton("Proveedores");
+		btnProveedores.setEnabled(false);
 		GridBagConstraints gbc_btnProveedores = new GridBagConstraints();
 		gbc_btnProveedores.insets = new Insets(0, 0, 5, 5);
 		gbc_btnProveedores.gridx = 5;
@@ -123,4 +153,15 @@ public class MainMenu extends JFrame {
 		gbc_btnProductos.gridy = 1;
 		contentPane.add(btnProductos, gbc_btnProductos);
 	}
+	
+	
+	public void toggleEnabledButtons(boolean enabled) {
+		btnProductos.setEnabled(enabled);
+		menuProductos.setEnabled(enabled);
+		btnClientes.setEnabled(enabled);
+		menuClientes.setEnabled(enabled);
+		btnProveedores.setEnabled(enabled);
+		menuProveedores.setEnabled(enabled);
+	}
+	
 }

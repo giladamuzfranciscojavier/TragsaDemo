@@ -40,8 +40,8 @@ public class UsuarioController {
 			
 			else {
 				//Dependiendo de los parámetros indicados inserta un nuevo cliente y/o un nuevo proveedor
-				if(cliente) {ps[0] = DBController.conn.prepareStatement("INSERT INTO cliente VALUES (?,?)");}
-				if(proveedor) {ps[1] = DBController.conn.prepareStatement("INSERT INTO proveedor VALUES(?,?)");}			
+				if(cliente && readUsuario(true,false,usuario.getDNI())==null) {ps[0] = DBController.conn.prepareStatement("INSERT INTO cliente VALUES (?,?)");}
+				if(proveedor && readUsuario(false,true,usuario.getDNI())==null) {ps[1] = DBController.conn.prepareStatement("INSERT INTO proveedor VALUES(?,?)");}			
 				
 				for(PreparedStatement p : ps) {
 					if(p==null) {

@@ -19,9 +19,9 @@ public class DBController {
 	public static boolean connect(String url, String user, String pswd) {
 				
 		try {			
-			conn = DriverManager.getConnection(DRIVER+url, user, pswd);
-			
+			conn = DriverManager.getConnection(DRIVER+url, user, pswd);			
 			System.out.println("Exito al conectar con la base de datos");
+			generateDB(false);
 			
 		}
 		catch(Exception ex) {
@@ -59,14 +59,14 @@ public class DBController {
 			st.executeUpdate("CREATE SCHEMA IF NOT EXISTS "+schemaName);
 			st.executeUpdate("USE "+schemaName);
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS cliente(cliente_dni varchar(9) NOT NULL,"
-					+ " nombre varchar(50),"
+					+ " nombre varchar(50) NOT NULL,"
 					+ " PRIMARY KEY(cliente_dni))");
 			
 			System.out.println("Creada tabla cliente");
 			
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS proveedor("
 					+ "proveedor_dni varchar(9) NOT NULL, "
-					+ "nombre varchar(50), "
+					+ "nombre varchar(50) NOT NULL, "
 					+ "PRIMARY KEY(proveedor_dni))");
 			
 			System.out.println("Creada tabla proveedor");

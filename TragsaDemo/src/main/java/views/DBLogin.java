@@ -27,7 +27,7 @@ public class DBLogin extends JDialog {
 	private JTextField user;
 	private JPasswordField pswd;
 	
-	private static DBLogin dblogin;
+	private static DBLogin self;
 	private JTextField url;
 
 
@@ -36,7 +36,7 @@ public class DBLogin extends JDialog {
 	 */
 	public DBLogin(MainMenu parent) {
 		super(parent,true);
-		dblogin=this;
+		self=this;
 		setBounds(100, 100, 304, 196);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -112,9 +112,11 @@ public class DBLogin extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
 							JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
-							dblogin.dispose();
+							parent.toggleEnabledButtons(true);
+							self.dispose();
 						}
 						else {
+							parent.toggleEnabledButtons(false);
 							JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
 						}
 					}
@@ -126,7 +128,7 @@ public class DBLogin extends JDialog {
 				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dblogin.dispose();
+						self.dispose();
 					}
 				});
 				buttonPane.add(cancelButton);

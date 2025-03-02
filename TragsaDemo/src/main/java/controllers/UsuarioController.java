@@ -3,6 +3,9 @@ package controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.usuarios.Cliente;
 import models.usuarios.ClienteProveedor;
@@ -13,7 +16,7 @@ public class UsuarioController {
 
 	public static boolean createUpdateUsuario(boolean cliente, boolean proveedor, Usuario usuario) {
 		//Se omite la operación si no hay una conexión válida. También se omite si ninguno de los booleanos es verdadero.
-		if(!DBController.checkConnection() || (!cliente && !proveedor)) {
+		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
 			return false;
 		}
 		
@@ -60,7 +63,7 @@ public class UsuarioController {
 	}
 	
 	public static Usuario readUsuario(boolean cliente, boolean proveedor, String dni) {
-		if(!DBController.checkConnection() || (!cliente && !proveedor)) {
+		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
 			return null;
 		}
 		
@@ -100,10 +103,53 @@ public class UsuarioController {
 		}
 		return null;
 	}
+	
+	
+	public static List<Usuario> readAllUsuarios(boolean cliente, boolean proveedor){
+		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
+			return null;
+		}
+		
+		try {		
+			Statement s;
+			List<Usuario> list = new ArrayList<>(); 
+			if(cliente) {
+					if(proveedor) {
+						//Si se marcan ambos booleanos solo muestran aquellos usuarios que sean clientes Y proveedores
+						s = DBController.conn.createStatement();
+						ResultSet rs = s.executeQuery("SELECT * FROM cliente JOIN proveedor");						
+						while(rs.next()) {
+							list.add(new ClienteProveedor(rs.getString(1), rs.getString(2)));
+						}
+					}
+					else {
+						s = DBController.conn.createStatement();
+						ResultSet rs = s.executeQuery("SELECT * FROM cliente");
+						while(rs.next()) {
+							list.add(new Cliente(rs.getString(1), rs.getString(2)));
+						}						
+					}				
+				}
+				
+				else if(proveedor) {
+					s = DBController.conn.createStatement();
+					ResultSet rs = s.executeQuery("SELECT * FROM proveedor");
+					while(rs.next()) {
+						list.add(new Proveedor(rs.getString(1), rs.getString(2)));						
+					}
+					
+				}
+			return list;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
 
 	//Solo borra a tipos de usuario marcados como parámetro (se puede borrar a un cliente-proveedor como cliente, proveedor o como ambos)
 	public static boolean deleteUsuario(boolean cliente, boolean proveedor, String dni) {
-		if(!DBController.checkConnection() || (!cliente && !proveedor)) {
+		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
 			return false;
 		}
 		

@@ -3,6 +3,7 @@ package controllers;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,6 +49,18 @@ class DBTest {
 		Proveedor p = new Proveedor("87654321Z", "Mengano");
 		assertTrue(UsuarioController.createUpdateUsuario(false, true, p));
 		Producto pr = new Producto("Cosa", 99.99, p.getDNI());
+		
+		/*Por problemas de diseño derivados de la urgencia de desarrollo es tremendamente complicado obtener 
+		el id de producto de forma automática habiendo más de 1 test, por lo que se truncará dicha tabla antes 
+		de cada test para que estén en una posición previsible. Si bien no es lo ideal es una solución rápida
+		*/
+		
+		try {
+			DBController.checkConnection().createStatement().executeUpdate("TRUNCATE producto");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		assertAll(
 				"Operaciones CRUD Producto",
 				()-> assertTrue(ProductoController.createUpdateProducto(pr)),
@@ -71,7 +84,40 @@ class DBTest {
 				()-> assertTrue(UsuarioController.readUsuario(true, true, cp.getDNI()).getNombre().equals("Mengano")),
 				()-> assertTrue(UsuarioController.deleteUsuario(true, true, cp.getDNI())),
 				()-> assertTrue(UsuarioController.readUsuario(true, true, cp.getDNI())==null)
-				);
+			);
+	}
+	
+	
+	@Test
+	void CompraTest() {
+		Cliente cl = new Cliente("ClTest", null);		
+		Proveedor pr = new Proveedor("PrTest", null);		
+		Producto pr1 = new Producto("Cosa Comprada", 12.34, "PrTest");
+		Producto pr2 = new Producto("Cosa NO Comprada", 56.78, "PrTest");
+		
+		try {
+			DBController.checkConnection().createStatement().executeUpdate("TRUNCATE producto");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		assertTrue(UsuarioController.createUpdateUsuario(true, false, cl));
+		assertTrue(UsuarioController.createUpdateUsuario(false, true, pr));
+		assertTrue(ProductoController.createUpdateProducto(pr1));
+		assertTrue(ProductoController.createUpdateProducto(pr2));
+		
+		assertTrue(ClienteController.comprarProducto(cl.getDNI(), pr1.getProducto_ID()));
+		
+		
+		assertAll(
+				"Operación de Compra",
+				() -> assertTrue(ClienteController.comprarProducto(cl.getDNI(), 1)),
+				() -> assertTrue(ProductoController.readAllProductos().size()==2),
+				() -> assertTrue(ClienteController.listProductosComprados(cl.getDNI()).size()==1),
+				() -> assertTrue(ClienteController.listProductosComprados(cl.getDNI()).get(0).getNombre().equals("Cosa Comprada"))
+			);
+		
+		
 	}
 	
 	

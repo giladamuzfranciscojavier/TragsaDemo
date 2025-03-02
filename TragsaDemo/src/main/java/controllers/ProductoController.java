@@ -3,6 +3,9 @@ package controllers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.Producto;
 
@@ -10,7 +13,7 @@ public class ProductoController {
 	
 
 	public static boolean createUpdateProducto(Producto producto) {
-		if(!DBController.checkConnection()) {
+		if(DBController.checkConnection()==null) {
 			return false;
 		}
 		
@@ -43,10 +46,10 @@ public class ProductoController {
 		}
 		
 		return true;
-	}
+	} 
 
 	public static Producto readProducto(int id) {
-		if(!DBController.checkConnection()) {
+		if(DBController.checkConnection()==null) {
 			return null;
 		}
 		
@@ -63,9 +66,32 @@ public class ProductoController {
 		}
 		return null;
 	}
+	
+	public static List<Producto> readAllProductos(){
+		if(DBController.checkConnection()==null) {
+			return null;
+		}
+		
+		try {		
+			Statement s;
+			List<Producto> list = new ArrayList<>(); 
+			s = DBController.conn.createStatement();
+			ResultSet rs = s.executeQuery("SELECT * FROM producto");						
+			while(rs.next()) {
+				list.add(new Producto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4),rs.getString(5)));
+			}
+			return list;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
+
+	
 
 	public static boolean deleteProducto(int id) {
-		if(!DBController.checkConnection()) {
+		if(DBController.checkConnection()==null) {
 			return false;
 		}
 		

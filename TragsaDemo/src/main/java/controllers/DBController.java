@@ -2,9 +2,6 @@ package controllers;
 
 import java.sql.Statement;
 
-import models.usuarios.*;
-import models.*;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -38,22 +35,22 @@ public class DBController {
 	}
 	
 	//Comprueba si existe una conexión válida
-	public static boolean checkConnection() {
+	public static Connection checkConnection() {
 		try {
 			if(conn!=null && conn.isValid(0)) {
-				return true;
+				return conn;
 			}
 		} catch (SQLException e) {
 			System.out.println("Error de conexión");
 			e.printStackTrace();			
 		}
-		return false;
+		return null;
 	}
 	
 	
 	//Genera la base de datos y las tablas necesarias
 	public static boolean generateDB(boolean test) {
-		if(!checkConnection()) {
+		if(checkConnection()==null) {
 			return false;
 		}
 		try {
@@ -81,19 +78,19 @@ public class DBController {
 					+ " proveedor_dni varchar(9) NOT NULL,"
 					+ " cliente_dni varchar(9),"
 					+ " PRIMARY KEY (producto_id),"
-					+ " CONSTRAINT FK_Cliente FOREIGN KEY (cliente_dni) REFERENCES cliente(cliente_dni),"
+					+ " CONSTRAINT FK_Cliente FOREIGN KEY (cliente_dni) REFERENCES cliente(cliente_dni) ON DELETE SET NULL,"
 					+ " CONSTRAINT FK_Proveedor FOREIGN KEY (proveedor_dni) REFERENCES proveedor(proveedor_dni) ON DELETE CASCADE);");
 			System.out.println("Creadas todas las tablas");
 		} catch (SQLException e) {			
 			e.printStackTrace();
 			return false;
-		}		
+		}
 		return true;
 	}
 	
 	public static boolean dropTestDB() {
 	
-		if(!checkConnection()) {
+		if(checkConnection()==null) {
 			return false;
 		}
 		try {

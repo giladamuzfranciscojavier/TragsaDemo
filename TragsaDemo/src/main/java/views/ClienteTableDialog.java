@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controllers.ProductoController;
 import controllers.UsuarioController;
 import models.usuarios.Usuario;
 
@@ -90,7 +91,13 @@ public class ClienteTableDialog extends JDialog{
 		btnNewButton_2.setBounds(339, 87, 151, 23);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
+				if(ProductoController.readAllProductosSinComprar().size()>0) {
+					new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(parent, "No hay productos disponibles para comprar", "Error",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		contentPanel.add(btnNewButton_2);
@@ -117,7 +124,7 @@ public class ClienteTableDialog extends JDialog{
 		if(list==null) {
 			parent.toggleEnabledButtons(false);
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-			this.dispose();
+			self.dispose();
 		}
 		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});

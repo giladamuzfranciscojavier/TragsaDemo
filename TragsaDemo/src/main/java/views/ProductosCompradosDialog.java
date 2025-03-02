@@ -79,7 +79,7 @@ public class ProductosCompradosDialog extends JDialog {
 		
 		if(list==null) {
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-			this.dispose();
+			self.dispose();
 		}
 		
 		list.forEach((it)->{dtm.addRow(new String[] {String.valueOf(it.getProducto_ID()), it.getNombre(), String.valueOf(it.getPrecio()), it.getProveedor_dni()});});

@@ -44,8 +44,15 @@ public class ProductoTableDialog extends JDialog {
 		JButton btnAddProducto = new JButton("Añadir Producto");
 		btnAddProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AddProductoDialog(self).setVisible(true);	
-				refreshTable();
+				if(UsuarioController.readAllUsuarios(false, true).size()>0) {
+					new AddProductoDialog(self).setVisible(true);	
+					refreshTable();
+				}
+				else {
+					JOptionPane.showMessageDialog(parent, "No hay proveedores disponibles para suministrar el producto",
+							"Error", JOptionPane.WARNING_MESSAGE);
+				}
+				
 			}
 		});
 		btnAddProducto.setBounds(274, 41, 150, 23);
@@ -86,7 +93,7 @@ public class ProductoTableDialog extends JDialog {
 		
 		if(list==null) {
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-			this.dispose();
+			self.dispose();
 		}
 		
 		list.forEach((it)->{dtm.addRow(new String[] {String.valueOf(it.getProducto_ID()), it.getNombre(), String.valueOf(it.getPrecio()), it.getProveedor_dni()});});

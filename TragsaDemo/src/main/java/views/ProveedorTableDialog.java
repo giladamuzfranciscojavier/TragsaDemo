@@ -96,7 +96,7 @@ public class ProveedorTableDialog extends JDialog{
 		if(list==null) {
 			parent.toggleEnabledButtons(false);
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-			this.dispose();
+			self.dispose();
 		}
 		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});

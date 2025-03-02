@@ -17,6 +17,7 @@ import models.usuarios.Usuario;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -80,12 +81,16 @@ public class AddProductoDialog extends JDialog {
 			}
 		});
 		txtNombre.setBounds(80, 8, 140, 20);
+		txtNombre.getInputMap().put(KeyStroke.getKeyStroke("control V"), "none");
 		contentPanel.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		JLabel lblNewLabel = new JLabel("Nombre");
 		lblNewLabel.setBounds(10, 11, 60, 14);
 		contentPanel.add(lblNewLabel);
+		
+		txtPrecio.getInputMap().put(KeyStroke.getKeyStroke("control V"), "none");
+		
 		txtPrecio.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {

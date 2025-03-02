@@ -14,6 +14,8 @@ import models.usuarios.*;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -64,6 +66,7 @@ public class AddUsuarioDialog extends JDialog {
 		}
 		{
 			txtdni = new JTextField();
+			txtdni.getInputMap().put(KeyStroke.getKeyStroke("control V"), "none");
 			txtdni.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyTyped(KeyEvent e) {
@@ -93,6 +96,7 @@ public class AddUsuarioDialog extends JDialog {
 			});
 			txtnombre.setBounds(69, 80, 226, 20);
 			txtnombre.setColumns(10);
+			txtnombre.getInputMap().put(KeyStroke.getKeyStroke("control V"), "none");
 			contentPanel.add(txtnombre);
 		}
 		{

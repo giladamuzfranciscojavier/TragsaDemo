@@ -87,6 +87,27 @@ public class ProductoController {
 		}
 		return null;
 	}
+	
+	public static List<Producto> readAllProductosSinComprar(){
+		if(DBController.checkConnection()==null) {
+			return null;
+		}
+		
+		try {		
+			Statement s;
+			List<Producto> list = new ArrayList<>(); 
+			s = DBController.conn.createStatement();
+			ResultSet rs = s.executeQuery("SELECT * FROM producto Where(cliente_dni IS null)");						
+			while(rs.next()) {
+				list.add(new Producto(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getString(4),rs.getString(5)));
+			}
+			return list;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();			
+		}
+		return null;
+	}
 
 	
 
@@ -107,4 +128,24 @@ public class ProductoController {
 		return true;
 		
 	}
+	
+	
+	public static boolean restablecerCompra(int id) {
+		if(DBController.checkConnection()==null) {
+			return false;
+		}
+		
+		try {			
+			PreparedStatement ps = DBController.conn.prepareStatement("UPDATE producto SET cliente_dni=NULL WHERE (producto_id=?)");
+			ps.setInt(1,id);
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {			
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

@@ -1,7 +1,5 @@
 package views;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;

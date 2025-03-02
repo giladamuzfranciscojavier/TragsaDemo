@@ -90,8 +90,8 @@ class DBTest {
 	
 	@Test
 	void CompraTest() {
-		Cliente cl = new Cliente("ClTest", null);		
-		Proveedor pr = new Proveedor("PrTest", null);		
+		Cliente cl = new Cliente("ClTest", "ClTest");		
+		Proveedor pr = new Proveedor("PrTest", "PrTest");		
 		Producto pr1 = new Producto("Cosa Comprada", 12.34, "PrTest");
 		Producto pr2 = new Producto("Cosa NO Comprada", 56.78, "PrTest");
 		

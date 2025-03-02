@@ -38,6 +38,8 @@ public class AddUsuarioDialog extends JDialog {
 	public AddUsuarioDialog(JDialog parent, boolean cliente, boolean proveedor) {
 		super(parent,true);
 		setResizable(false);
+		
+		//Ajusta el título y el texto de la checkbox en base al origen
 		if(cliente) {
 			setTitle("Añadir Cliente");
 			chckbxAddAsOther.setText("Añadir también como Proveedor");
@@ -85,31 +87,10 @@ public class AddUsuarioDialog extends JDialog {
 			contentPanel.add(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(UsuarioController.readUsuario(cliente, proveedor, txtdni.getText())!=null) {
-						JOptionPane.showMessageDialog(self, "Ya existe ese usuario","Error", JOptionPane.WARNING_MESSAGE);
-					}
-					else {							
-						if(chckbxAddAsOther.isSelected()) {
-							if(UsuarioController.createUpdateUsuario(true, true, new ClienteProveedor(txtdni.getText(), txtnombre.getText()))) {
-								JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
-								self.dispose();
-							}
-							else {
-								JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
-							}
-						}
-						
-						else {
-							if(UsuarioController.createUpdateUsuario(cliente, proveedor, new Cliente(txtdni.getText(), txtnombre.getText()))) {
-								JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
-								self.dispose();
-							}	
-							else {
-								JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
-							}							
-						}
-					}						
+					addUsuario(cliente, proveedor);						
 				}
+
+				
 			});
 			okButton.setActionCommand("OK");
 			getRootPane().setDefaultButton(okButton);
@@ -124,6 +105,41 @@ public class AddUsuarioDialog extends JDialog {
 			cancelButton.setBounds(204, 147, 91, 23);
 			contentPanel.add(cancelButton);
 			cancelButton.setActionCommand("Cancel");
+		}
+	}
+	
+	
+	//Añade un usuario de un tipo o de ambos
+	private void addUsuario(boolean cliente, boolean proveedor) {
+		
+		//Si ya existe el usuario no hace nada
+		if(UsuarioController.readUsuario(cliente, proveedor, txtdni.getText())!=null) {
+			JOptionPane.showMessageDialog(self, "Ya existe ese usuario","Error", JOptionPane.WARNING_MESSAGE);
+		}
+		
+		else {			
+			
+			//Si la checkbox está marcada se añade como ambos tipos
+			if(chckbxAddAsOther.isSelected()) {
+				if(UsuarioController.createUpdateUsuario(true, true, new ClienteProveedor(txtdni.getText(), txtnombre.getText()))) {
+					JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
+					self.dispose();
+				}
+				else {
+					JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+			
+			//Si no está marcada se añade como el tipo correspondiente al origen
+			else {
+				if(UsuarioController.createUpdateUsuario(cliente, proveedor, new Cliente(txtdni.getText(), txtnombre.getText()))) {
+					JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
+					self.dispose();
+				}	
+				else {
+					JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
+				}							
+			}
 		}
 	}
 

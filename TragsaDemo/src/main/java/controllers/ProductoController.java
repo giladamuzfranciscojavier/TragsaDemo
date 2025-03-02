@@ -11,7 +11,7 @@ import models.Producto;
 
 public class ProductoController {
 	
-
+	//Creación y actualización de producto
 	public static boolean createUpdateProducto(Producto producto) {
 		if(DBController.checkConnection()==null) {
 			return false;
@@ -48,6 +48,7 @@ public class ProductoController {
 		return true;
 	} 
 
+	//Lectura de un producto en base a la id proporcionada
 	public static Producto readProducto(int id) {
 		if(DBController.checkConnection()==null) {
 			return null;
@@ -67,6 +68,7 @@ public class ProductoController {
 		return null;
 	}
 	
+	//Lectura de todos los productos
 	public static List<Producto> readAllProductos(){
 		if(DBController.checkConnection()==null) {
 			return null;
@@ -88,6 +90,7 @@ public class ProductoController {
 		return null;
 	}
 	
+	//Devuelve todos los productos sin un cliente asignado
 	public static List<Producto> readAllProductosSinComprar(){
 		if(DBController.checkConnection()==null) {
 			return null;
@@ -111,6 +114,7 @@ public class ProductoController {
 
 	
 
+	//Elimina el producto indicado de la base de datos
 	public static boolean deleteProducto(int id) {
 		if(DBController.checkConnection()==null) {
 			return false;
@@ -130,6 +134,7 @@ public class ProductoController {
 	}
 	
 	
+	//Elimina el cliente asociado al producto indicado
 	public static boolean restablecerCompra(int id) {
 		if(DBController.checkConnection()==null) {
 			return false;

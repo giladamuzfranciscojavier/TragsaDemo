@@ -48,18 +48,7 @@ public class AddProductoDialog extends JDialog {
 			JButton okButton = new JButton("Aceptar");
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
-					if (ProductoController.createUpdateProducto(
-							new Producto(txtNombre.getText(), Double.parseDouble(txtPrecio.getText()), dni))) {
-						JOptionPane.showMessageDialog(self, "Producto creado con éxito", "Éxito",
-								JOptionPane.INFORMATION_MESSAGE);
-						self.dispose();
-					}
-
-					else {
-						JOptionPane.showMessageDialog(self, "Error al crear el producto", "Error",
-								JOptionPane.WARNING_MESSAGE);
-					}
+					addProducto();
 
 				}
 			});
@@ -99,6 +88,7 @@ public class AddProductoDialog extends JDialog {
 
 	}
 
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = { "DNI", "Nombre" };
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {
@@ -128,5 +118,22 @@ public class AddProductoDialog extends JDialog {
 
 		table.getSelectionModel().setSelectionInterval(0, 0);
 
+	}
+	
+	
+	//Añade un producto a la base de datos
+	private void addProducto() {
+		String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
+		if (ProductoController.createUpdateProducto(
+				new Producto(txtNombre.getText(), Double.parseDouble(txtPrecio.getText()), dni))) {
+			JOptionPane.showMessageDialog(self, "Producto creado con éxito", "Éxito",
+					JOptionPane.INFORMATION_MESSAGE);
+			self.dispose();
+		}
+
+		else {
+			JOptionPane.showMessageDialog(self, "Error al crear el producto", "Error",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 }

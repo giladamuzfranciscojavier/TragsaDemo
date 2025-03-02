@@ -11,6 +11,8 @@ import models.Producto;
 
 public class ClienteController {
 	
+	
+	//Muestra todos los productos comprados por un cliente
 	public static List<Producto> listProductosComprados(String dni) {
 		Connection conn = DBController.checkConnection();
 		if(conn==null) {
@@ -33,6 +35,7 @@ public class ClienteController {
 	}
 	
 	
+	//Asigna un cliente a un producto (compra)
 	public static boolean comprarProducto(String dni, int producto_id) {
 		Connection conn = DBController.checkConnection();
 		if(conn==null) {

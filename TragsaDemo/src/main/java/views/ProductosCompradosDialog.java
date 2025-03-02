@@ -66,6 +66,8 @@ public class ProductosCompradosDialog extends JDialog {
 		
 	}
 	
+	
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = new String[] {"id", "nombre", "precio", "proveedor"};
 		

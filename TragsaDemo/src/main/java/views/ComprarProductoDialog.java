@@ -38,19 +38,7 @@ public class ComprarProductoDialog extends JDialog {
 		JButton btnComprar = new JButton("Comprar");
 		btnComprar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-
-				if (ClienteController.comprarProducto(dni, id)) {
-					JOptionPane.showMessageDialog(self, "Producto comprado con éxito", "Éxito",
-							JOptionPane.INFORMATION_MESSAGE);
-					refreshTable();
-				}
-
-				else {
-					JOptionPane.showMessageDialog(self, "Error al comprar el producto", "Error",
-							JOptionPane.WARNING_MESSAGE);
-				}
-
+				compraProducto(dni);
 			}
 		});
 		btnComprar.setBounds(335, 41, 89, 23);
@@ -61,6 +49,8 @@ public class ComprarProductoDialog extends JDialog {
 
 	}
 
+	
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = new String[] { "id", "nombre", "precio", "proveedor" };
 
@@ -92,6 +82,23 @@ public class ComprarProductoDialog extends JDialog {
 			self.dispose();
 		}
 		
+	}
+	
+	
+	//Asigna el cliente al producto seleccionado
+	private void compraProducto(String dni) {
+		int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+
+		if (ClienteController.comprarProducto(dni, id)) {
+			JOptionPane.showMessageDialog(self, "Producto comprado con éxito", "Éxito",
+					JOptionPane.INFORMATION_MESSAGE);
+			refreshTable();
+		}
+
+		else {
+			JOptionPane.showMessageDialog(self, "Error al comprar el producto", "Error",
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 }

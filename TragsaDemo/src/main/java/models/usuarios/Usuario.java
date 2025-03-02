@@ -2,6 +2,9 @@ package models.usuarios;
 
 import java.util.Objects;
 
+//Clase que proporciona la estructura de todos los tipos de usuario
+//Si bien en este caso podría funcionar sin necesidad de ser heredada seguir este 
+//enfoque proporcionaría una mayor flexibilidad a la hora de implementar nuevas funcionalidades
 public abstract class Usuario {
 	private String DNI;
 	private String nombre;
@@ -26,6 +29,7 @@ public abstract class Usuario {
 		return Objects.hash(DNI);
 	}
 
+	//La igualdad de usuarios se determina por su dni
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

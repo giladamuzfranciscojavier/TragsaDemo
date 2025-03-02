@@ -101,14 +101,7 @@ public class MainMenu extends JFrame {
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Conexión por defecto");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD)) {
-					JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
-					toggleEnabledButtons(true);
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-					toggleEnabledButtons(false);
-				}
+				fastConnect();
 			}
 		});
 		mnNewMenu_1.add(mntmNewMenuItem_4);
@@ -148,6 +141,7 @@ public class MainMenu extends JFrame {
 	}
 	
 	
+	//Activa o desactiva los botones en base al estado de conexión con la base de datos
 	public void toggleEnabledButtons(boolean enabled) {
 		btnProductos.setEnabled(enabled);
 		menuProductos.setEnabled(enabled);
@@ -155,6 +149,19 @@ public class MainMenu extends JFrame {
 		menuClientes.setEnabled(enabled);
 		btnProveedores.setEnabled(enabled);
 		menuProveedores.setEnabled(enabled);
+	}
+	
+	
+	//Método para conectar con la base de datos con las credenciales por defecto. Simplifica enormemente las pruebas de interfaz
+	private void fastConnect() {
+		if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD)) {
+			JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
+			toggleEnabledButtons(true);
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
+			toggleEnabledButtons(false);
+		}
 	}
 	
 }

@@ -2,6 +2,8 @@ package models;
 
 import java.util.Objects;
 
+
+//Clase que representa a los productos
 public class Producto {
 	private int producto_ID;
 	
@@ -9,6 +11,16 @@ public class Producto {
 	private double precio;
 	private String proveedor_dni;
 	private String cliente_dni;
+	
+	
+	/* Constructores para los siguientes casos:
+	 * 
+	 * 1. No se tiene id ni cliente 
+	 * 2. No se tiene id, pero sí cliente
+	 * 3. Se tiene id, pero no cliente
+	 * 4. Se tienen todos los parámetros
+	 * 
+	 * */
 	
 	public Producto(String nombre, double precio, String proveedor_dni) {
 		this.nombre=nombre;
@@ -76,6 +88,10 @@ public class Producto {
 		return Objects.hash(producto_ID);
 	}
 
+	
+	//La igualdad entre productos viene determinada por su id.
+	//Esto claramente dificulta las pruebas, ya que la id la determina 
+	//la base de datos, pero no se dispone de mayor información que los diferencie
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

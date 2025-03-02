@@ -29,12 +29,15 @@ class DBTest {
 		
 	}
 	
+	//Comprueba que las operaciones CRUD se realizan correctamente. 
+	//Se realizan varias lecturas para verificar que se efectúan los cambios
 	@Test
 	void clienteCRUDTest() {
 		Cliente c = new Cliente("12345678A","Fulano");
 		assertAll(
 			"Operaciones CRUD Cliente",
-			()-> assertTrue(UsuarioController.createUpdateUsuario(true, false, c)),
+			
+			()-> assertTrue(UsuarioController.createUpdateUsuario(true, false, c)),			
 			()-> assertTrue(UsuarioController.readUsuario(true, false, c.getDNI()).equals(c)),
 			()-> assertTrue(UsuarioController.createUpdateUsuario(true, false, new Cliente(c.getDNI(), "Mengano"))),
 			()-> assertTrue(UsuarioController.readUsuario(true, false, c.getDNI()).getNombre().equals("Mengano")),
@@ -52,7 +55,8 @@ class DBTest {
 		
 		/*Por problemas de diseño derivados de la urgencia de desarrollo es tremendamente complicado obtener 
 		el id de producto de forma automática habiendo más de 1 test, por lo que se truncará dicha tabla antes 
-		de cada test para que estén en una posición previsible. Si bien no es lo ideal es una solución rápida
+		de cada test relacionado con los productos para que estén en una posición previsible. 
+		Si bien no es lo ideal es una solución rápida.
 		*/
 		
 		try {
@@ -88,6 +92,8 @@ class DBTest {
 	}
 	
 	
+	
+	//Comprueba que las operaciones de compra se realizan correctamente
 	@Test
 	void CompraTest() {
 		Cliente cl = new Cliente("ClTest", "ClTest");		

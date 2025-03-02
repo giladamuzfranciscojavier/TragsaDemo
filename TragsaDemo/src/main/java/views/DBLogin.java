@@ -31,9 +31,6 @@ public class DBLogin extends JDialog {
 	private JTextField url;
 
 
-	/**
-	 * Create the dialog.
-	 */
 	public DBLogin(MainMenu parent) {
 		super(parent,true);
 		setResizable(false);
@@ -112,16 +109,9 @@ public class DBLogin extends JDialog {
 				JButton okButton = new JButton("Aceptar");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
-							JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
-							parent.toggleEnabledButtons(true);
-							self.dispose();
-						}
-						else {
-							parent.toggleEnabledButtons(false);
-							JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
-						}
+						connect(parent);
 					}
+					
 				});
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -135,6 +125,19 @@ public class DBLogin extends JDialog {
 				});
 				buttonPane.add(cancelButton);
 			}
+		}
+	}
+	
+	//Trata de conectar con la base de datos. En caso de conseguirlo desbloquea los botones del menú principal
+	private void connect(MainMenu parent) {
+		if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
+			JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
+			parent.toggleEnabledButtons(true);
+			self.dispose();
+		}
+		else {
+			parent.toggleEnabledButtons(false);
+			JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

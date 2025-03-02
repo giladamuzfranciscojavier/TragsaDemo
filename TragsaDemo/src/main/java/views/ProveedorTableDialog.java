@@ -83,6 +83,8 @@ public class ProveedorTableDialog extends JDialog{
 				
 	}
 	
+	
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = {"DNI", "Nombre"};
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {

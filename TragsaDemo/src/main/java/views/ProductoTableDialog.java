@@ -1,18 +1,13 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controllers.ClienteController;
 import controllers.ProductoController;
 import controllers.UsuarioController;
 import models.Producto;
@@ -61,17 +56,9 @@ public class ProductoTableDialog extends JDialog {
 		JButton btnBorrarProducto = new JButton("Borrar Producto");
 		btnBorrarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-				int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar Producto?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
-				if(opcion==JOptionPane.YES_OPTION) {
-					ProductoController.deleteProducto(id);
-				}
-				else {
-					return;
-				}
-				
-				refreshTable();
+				borraProducto();
 			}
+			
 		});
 		btnBorrarProducto.setBounds(10, 41, 150, 23);
 		getContentPane().add(btnBorrarProducto);
@@ -80,6 +67,7 @@ public class ProductoTableDialog extends JDialog {
 		
 	}
 	
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = new String[] {"id", "nombre", "precio", "proveedor"};
 		
@@ -99,6 +87,22 @@ public class ProductoTableDialog extends JDialog {
 		list.forEach((it)->{dtm.addRow(new String[] {String.valueOf(it.getProducto_ID()), it.getNombre(), String.valueOf(it.getPrecio()), it.getProveedor_dni()});});
 		
 		table.setModel(dtm);
+	}
+	
+	
+	
+	//Borra el producto seleccionado y refresca la tabla
+	private void borraProducto() {
+		int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+		int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar Producto?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+		if(opcion==JOptionPane.YES_OPTION) {
+			ProductoController.deleteProducto(id);
+		}
+		else {
+			return;
+		}
+		
+		refreshTable();
 	}
 	
 }

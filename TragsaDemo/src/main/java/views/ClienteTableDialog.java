@@ -13,10 +13,7 @@ import controllers.ProductoController;
 import controllers.UsuarioController;
 import models.usuarios.Usuario;
 
-import java.awt.GridBagLayout;
 import javax.swing.JTable;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -61,20 +58,8 @@ public class ClienteTableDialog extends JDialog{
 		btnDeleteCliente.setBounds(144, 35, 124, 23);
 		btnDeleteCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
-				int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar también como proveedor?", "Confirmar borrado", JOptionPane.YES_NO_CANCEL_OPTION);
-				if(opcion==JOptionPane.YES_OPTION) {
-					UsuarioController.deleteUsuario(true, true, dni);
-				}
-				else if(opcion==JOptionPane.NO_OPTION) {
-					UsuarioController.deleteUsuario(true, false, dni);
-				}
-				else {
-					return;
-				}
-				
-				refreshTable();
-			}
+				borrarUsuario();
+			}			
 		});
 		contentPanel.add(btnDeleteCliente);
 		
@@ -91,13 +76,7 @@ public class ClienteTableDialog extends JDialog{
 		btnNewButton_2.setBounds(339, 87, 151, 23);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(ProductoController.readAllProductosSinComprar().size()>0) {
-					new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
-				}
-				else {
-					JOptionPane.showMessageDialog(parent, "No hay productos disponibles para comprar", "Error",
-							JOptionPane.WARNING_MESSAGE);
-				}
+				showComprarProductoDialog(parent);
 			}
 		});
 		contentPanel.add(btnNewButton_2);
@@ -111,6 +90,8 @@ public class ClienteTableDialog extends JDialog{
 				
 	}
 	
+	
+	//Refresca la tabla de datos. Se realiza al inicio y después de potenciales cambios en los datos
 	private void refreshTable() {
 		String[] cols = {"DNI", "Nombre"};
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {
@@ -132,4 +113,32 @@ public class ClienteTableDialog extends JDialog{
 		table.getSelectionModel().setSelectionInterval(0, 0);
 	}
 
+	
+	//Elimina al usuario de la base de datos
+	private void borrarUsuario() {
+		String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
+		int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar también como proveedor?", "Confirmar borrado", JOptionPane.YES_NO_CANCEL_OPTION);
+		if(opcion==JOptionPane.YES_OPTION) {
+			UsuarioController.deleteUsuario(true, true, dni);
+		}
+		else if(opcion==JOptionPane.NO_OPTION) {
+			UsuarioController.deleteUsuario(true, false, dni);
+		}
+		else {
+			return;
+		}
+		
+		refreshTable();
+	}
+	
+	//Muestra el diálogo para comprar productos si los hay disponibles
+	private void showComprarProductoDialog(MainMenu parent) {
+		if(ProductoController.readAllProductosSinComprar().size()>0) {
+			new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
+		}
+		else {
+			JOptionPane.showMessageDialog(parent, "No hay productos disponibles para comprar", "Error",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
 }

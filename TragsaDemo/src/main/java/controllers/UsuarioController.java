@@ -14,6 +14,8 @@ import models.usuarios.Usuario;
 
 public class UsuarioController {
 
+	
+	//Creación y actualización de usuarios
 	public static boolean createUpdateUsuario(boolean cliente, boolean proveedor, Usuario usuario) {
 		//Se omite la operación si no hay una conexión válida. También se omite si ninguno de los booleanos es verdadero.
 		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
@@ -62,6 +64,8 @@ public class UsuarioController {
 		return true;
 	}
 	
+	
+	//Lectura de un usuario en base a su tipo y dni
 	public static Usuario readUsuario(boolean cliente, boolean proveedor, String dni) {
 		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
 			return null;
@@ -104,7 +108,7 @@ public class UsuarioController {
 		return null;
 	}
 	
-	
+	//Lectura de todos los usuarios del tipo determinado
 	public static List<Usuario> readAllUsuarios(boolean cliente, boolean proveedor){
 		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {
 			return null;
@@ -147,6 +151,7 @@ public class UsuarioController {
 		return null;
 	}
 
+	//Elimina al usuario en base a su tipo y dni
 	//Solo borra a tipos de usuario marcados como parámetro (se puede borrar a un cliente-proveedor como cliente, proveedor o como ambos)
 	public static boolean deleteUsuario(boolean cliente, boolean proveedor, String dni) {
 		if(DBController.checkConnection()==null || (!cliente && !proveedor)) {

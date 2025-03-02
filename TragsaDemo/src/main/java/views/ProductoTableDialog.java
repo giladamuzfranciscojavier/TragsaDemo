@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,52 +16,58 @@ import controllers.ClienteController;
 import controllers.ProductoController;
 import controllers.UsuarioController;
 import models.Producto;
-
-import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ProductosCompradosDialog extends JDialog {
+public class ProductoTableDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ProductosCompradosDialog self;
+	private ProductoTableDialog self;
 	private JTable table;
-	private JDialog parent;
-	private String dni;
 
+	private MainMenu parent;
 
-	public ProductosCompradosDialog(JDialog parent, String dni) {
-		super(parent, true);
+	public ProductoTableDialog(MainMenu frame) {
+		super(frame, true);
 		setResizable(false);
-		setTitle("Productos Comprados");
+		setTitle("Comprar Producto");
 		setBounds(100, 100, 450, 300);
 		self = this;
-		this.parent=parent;
-		this.dni=dni;
+		this.parent=frame;		
 		getContentPane().setLayout(null);
 		
 		table = new JTable();
-		table.setBounds(0, 77, 434, 184);
+		table.setBounds(0, 75, 434, 175);
 		getContentPane().add(table);
 		
-		JButton btnCancelBuy = new JButton("Cancelar Compra");
-		btnCancelBuy.addActionListener(new ActionListener() {
+		JButton btnAddProducto = new JButton("Añadir Producto");
+		btnAddProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
-				
-				if(ProductoController.restablecerCompra(id)) {
-					JOptionPane.showMessageDialog(self, "Producto devuelto con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
-					refreshTable();
-				}
-				
-				else {
-					JOptionPane.showMessageDialog(self, "Error al devolver el producto","Error", JOptionPane.WARNING_MESSAGE);
-				}
+				new AddProductoDialog(self).setVisible(true);	
+				refreshTable();
 			}
 		});
-		btnCancelBuy.setBounds(267, 43, 157, 23);
-		getContentPane().add(btnCancelBuy);
+		btnAddProducto.setBounds(274, 41, 150, 23);
+		getContentPane().add(btnAddProducto);
+		
+		JButton btnBorrarProducto = new JButton("Borrar Producto");
+		btnBorrarProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
+				int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar Producto?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+				if(opcion==JOptionPane.YES_OPTION) {
+					ProductoController.deleteProducto(id);
+				}
+				else {
+					return;
+				}
+				
+				refreshTable();
+			}
+		});
+		btnBorrarProducto.setBounds(10, 41, 150, 23);
+		getContentPane().add(btnBorrarProducto);
 		
 		refreshTable();
 		
@@ -75,7 +82,7 @@ public class ProductosCompradosDialog extends JDialog {
 			}
 		};
 		
-		List<Producto> list = ClienteController.listProductosComprados(dni);
+		List<Producto> list = ProductoController.readAllProductos();
 		
 		if(list==null) {
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
@@ -86,5 +93,5 @@ public class ProductosCompradosDialog extends JDialog {
 		
 		table.setModel(dtm);
 	}
-
+	
 }

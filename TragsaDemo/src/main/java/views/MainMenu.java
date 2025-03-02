@@ -132,6 +132,7 @@ public class MainMenu extends JFrame {
 		btnProductos.setEnabled(false);
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new ProductoTableDialog(frame).setVisible(true);
 			}
 		});		
 		btnProveedores.addActionListener(new ActionListener() {

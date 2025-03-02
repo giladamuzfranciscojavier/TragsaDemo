@@ -34,6 +34,7 @@ public class ClienteTableDialog extends JDialog{
 
 	public ClienteTableDialog(MainMenu parent) {
 		super(parent,true);
+		setResizable(false);
 		setTitle("Clientes");
 		this.parent=parent;
 		self = this;
@@ -45,18 +46,18 @@ public class ClienteTableDialog extends JDialog{
 		getContentPane().add(contentPanel);
 		
 		JButton btnAddCliente = new JButton("Añadir Cliente");
-		btnAddCliente.setBounds(35, 35, 99, 23);
+		btnAddCliente.setBounds(10, 35, 124, 23);
 		btnAddCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new AddUsuarioDialog(self, true, false).setVisible(true);
-				loadClientes();
+				refreshTable();
 			}
 		});
 		contentPanel.setLayout(null);
 		contentPanel.add(btnAddCliente);
 		
 		btnDeleteCliente = new JButton("Borrar Cliente");
-		btnDeleteCliente.setBounds(169, 35, 99, 23);
+		btnDeleteCliente.setBounds(144, 35, 124, 23);
 		btnDeleteCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
@@ -71,13 +72,13 @@ public class ClienteTableDialog extends JDialog{
 					return;
 				}
 				
-				loadClientes();
+				refreshTable();
 			}
 		});
 		contentPanel.add(btnDeleteCliente);
 		
 		btnProductosComprados = new JButton("Ver Productos Comprados");
-		btnProductosComprados.setBounds(333, 35, 157, 23);
+		btnProductosComprados.setBounds(290, 35, 200, 23);
 		btnProductosComprados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ProductosCompradosDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
@@ -86,7 +87,7 @@ public class ClienteTableDialog extends JDialog{
 		contentPanel.add(btnProductosComprados);
 		
 		btnNewButton_2 = new JButton("Comprar Producto");
-		btnNewButton_2.setBounds(371, 87, 119, 23);
+		btnNewButton_2.setBounds(339, 87, 151, 23);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
@@ -99,11 +100,11 @@ public class ClienteTableDialog extends JDialog{
 			contentPanel.add(table);
 		}
 		
-		loadClientes();
+		refreshTable();
 				
 	}
 	
-	private void loadClientes() {
+	private void refreshTable() {
 		String[] cols = {"DNI", "Nombre"};
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {
 			public boolean isCellEditable(int row, int col) {

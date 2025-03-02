@@ -29,6 +29,7 @@ public class ComprarProductoDialog extends JDialog {
 
 	public ComprarProductoDialog(JDialog parent, String dni) {
 		super(parent, true);
+		setResizable(false);
 		setTitle("Comprar Producto");
 		setBounds(100, 100, 450, 300);
 		self = this;

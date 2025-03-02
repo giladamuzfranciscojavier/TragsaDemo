@@ -36,6 +36,7 @@ public class DBLogin extends JDialog {
 	 */
 	public DBLogin(MainMenu parent) {
 		super(parent,true);
+		setResizable(false);
 		self=this;
 		setLocationRelativeTo(parent);
 		setBounds(100, 100, 304, 196);

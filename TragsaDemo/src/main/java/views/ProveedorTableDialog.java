@@ -32,6 +32,7 @@ public class ProveedorTableDialog extends JDialog{
 
 	public ProveedorTableDialog(MainMenu parent) {
 		super(parent,true);
+		setResizable(false);
 		setTitle("Proveedores");
 		this.parent=parent;
 		self = this;
@@ -46,7 +47,7 @@ public class ProveedorTableDialog extends JDialog{
 		btnAddCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new AddUsuarioDialog(self, false, true).setVisible(true);
-				loadProveedores();
+				refreshTable();
 			}
 		});
 		contentPanel.setLayout(null);
@@ -68,7 +69,7 @@ public class ProveedorTableDialog extends JDialog{
 					return;
 				}
 				
-				loadProveedores();
+				refreshTable();
 			}
 		});
 		contentPanel.add(btnDeleteProveedor);
@@ -78,11 +79,11 @@ public class ProveedorTableDialog extends JDialog{
 			contentPanel.add(table);
 		}
 		
-		loadProveedores();
+		refreshTable();
 				
 	}
 	
-	private void loadProveedores() {
+	private void refreshTable() {
 		String[] cols = {"DNI", "Nombre"};
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {
 			public boolean isCellEditable(int row, int col) {

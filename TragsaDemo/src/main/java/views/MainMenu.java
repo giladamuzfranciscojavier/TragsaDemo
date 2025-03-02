@@ -51,9 +51,10 @@ public class MainMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public MainMenu() {
+		setTitle("TragsaDemo");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 496, 270);
+		setBounds(100, 100, 420, 120);
 		setLocationRelativeTo(null);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -115,12 +116,7 @@ public class MainMenu extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		btnClientes.setBounds(10, 11, 120, 23);
 		
 		
 		btnClientes.setEnabled(false);
@@ -129,29 +125,25 @@ public class MainMenu extends JFrame {
 				new ClienteTableDialog(frame).setVisible(true);
 			}
 		});
-		GridBagConstraints gbc_btnClientes = new GridBagConstraints();
-		gbc_btnClientes.insets = new Insets(0, 0, 5, 5);
-		gbc_btnClientes.gridx = 1;
-		gbc_btnClientes.gridy = 1;
-		contentPane.add(btnClientes, gbc_btnClientes);
+		contentPane.setLayout(null);
+		contentPane.add(btnClientes);
+		btnProductos.setBounds(270, 11, 120, 23);
 		
 		btnProductos.setEnabled(false);
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});		
+		btnProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ProveedorTableDialog(frame).setVisible(true);;
+			}
+		});
+		btnProveedores.setBounds(140, 11, 120, 23);
 		
 		btnProveedores.setEnabled(false);
-		GridBagConstraints gbc_btnProveedores = new GridBagConstraints();
-		gbc_btnProveedores.insets = new Insets(0, 0, 5, 5);
-		gbc_btnProveedores.gridx = 5;
-		gbc_btnProveedores.gridy = 1;
-		contentPane.add(btnProveedores, gbc_btnProveedores);
-		GridBagConstraints gbc_btnProductos = new GridBagConstraints();
-		gbc_btnProductos.insets = new Insets(0, 0, 5, 5);
-		gbc_btnProductos.gridx = 9;
-		gbc_btnProductos.gridy = 1;
-		contentPane.add(btnProductos, gbc_btnProductos);
+		contentPane.add(btnProveedores);
+		contentPane.add(btnProductos);
 	}
 	
 	

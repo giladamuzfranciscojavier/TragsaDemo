@@ -37,6 +37,7 @@ public class DBLogin extends JDialog {
 	public DBLogin(MainMenu parent) {
 		super(parent,true);
 		self=this;
+		setLocationRelativeTo(parent);
 		setBounds(100, 100, 304, 196);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

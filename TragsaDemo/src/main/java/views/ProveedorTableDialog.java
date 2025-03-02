@@ -20,90 +20,69 @@ import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ClienteTableDialog extends JDialog{
+public class ProveedorTableDialog extends JDialog{
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
-	private JButton btnDeleteCliente;
-	private JButton btnNewButton_2;
-	private JButton btnProductosComprados;
+	private JButton btnDeleteProveedor;
 	private MainMenu parent;
 	
-	private ClienteTableDialog self;
+	private ProveedorTableDialog self;
 
-	public ClienteTableDialog(MainMenu parent) {
+	public ProveedorTableDialog(MainMenu parent) {
 		super(parent,true);
-		setTitle("Clientes");
+		setTitle("Proveedores");
 		this.parent=parent;
 		self = this;
 		setLocationRelativeTo(parent);
 		setBounds(100, 100, 510, 401);
-		getContentPane().setLayout(null);
-		contentPanel.setBounds(0, 0, 590, 362);
+		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel);
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JButton btnAddCliente = new JButton("Añadir Cliente");
-		btnAddCliente.setBounds(35, 35, 99, 23);
+		JButton btnAddCliente = new JButton("Añadir Proveedor");
+		btnAddCliente.setBounds(10, 35, 150, 23);
 		btnAddCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AddUsuarioDialog(self, true, false).setVisible(true);
-				loadClientes();
+				new AddUsuarioDialog(self, false, true).setVisible(true);
+				loadProveedores();
 			}
 		});
 		contentPanel.setLayout(null);
 		contentPanel.add(btnAddCliente);
 		
-		btnDeleteCliente = new JButton("Borrar Cliente");
-		btnDeleteCliente.setBounds(169, 35, 99, 23);
-		btnDeleteCliente.addActionListener(new ActionListener() {
+		btnDeleteProveedor = new JButton("Borrar Proveedor");
+		btnDeleteProveedor.setBounds(334, 35, 150, 23);
+		btnDeleteProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
-				int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar también como proveedor?", "Confirmar borrado", JOptionPane.YES_NO_CANCEL_OPTION);
+				int opcion = JOptionPane.showConfirmDialog(self, "¿Borrar también como cliente?", "Confirmar borrado", JOptionPane.YES_NO_CANCEL_OPTION);
 				if(opcion==JOptionPane.YES_OPTION) {
 					UsuarioController.deleteUsuario(true, true, dni);
 				}
 				else if(opcion==JOptionPane.NO_OPTION) {
-					UsuarioController.deleteUsuario(true, false, dni);
+					UsuarioController.deleteUsuario(false, true, dni);
 				}
 				else {
 					return;
 				}
 				
-				loadClientes();
+				loadProveedores();
 			}
 		});
-		contentPanel.add(btnDeleteCliente);
-		
-		btnProductosComprados = new JButton("Ver Productos Comprados");
-		btnProductosComprados.setBounds(333, 35, 157, 23);
-		btnProductosComprados.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ProductosCompradosDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
-			}
-		});
-		contentPanel.add(btnProductosComprados);
-		
-		btnNewButton_2 = new JButton("Comprar Producto");
-		btnNewButton_2.setBounds(371, 87, 119, 23);
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ComprarProductoDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
-			}
-		});
-		contentPanel.add(btnNewButton_2);
+		contentPanel.add(btnDeleteProveedor);
 		{
 			table = new JTable();
-			table.setBounds(5, 121, 485, 236);
+			table.setBounds(0, 69, 494, 288);
 			contentPanel.add(table);
 		}
 		
-		loadClientes();
+		loadProveedores();
 				
 	}
 	
-	private void loadClientes() {
+	private void loadProveedores() {
 		String[] cols = {"DNI", "Nombre"};
 		DefaultTableModel dtm = new DefaultTableModel(cols, 0) {
 			public boolean isCellEditable(int row, int col) {
@@ -111,7 +90,7 @@ public class ClienteTableDialog extends JDialog{
 			}
 		};
 	
-		List<Usuario> list = UsuarioController.readAllUsuarios(true, false);
+		List<Usuario> list = UsuarioController.readAllUsuarios(false, true);
 		
 		if(list==null) {
 			parent.toggleEnabledButtons(false);
@@ -121,7 +100,9 @@ public class ClienteTableDialog extends JDialog{
 		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});
 		table.setModel(dtm);
+		
 		table.getSelectionModel().setSelectionInterval(0, 0);
+		
 	}
 
 }

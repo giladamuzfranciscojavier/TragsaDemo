@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AddProductoDialog extends JDialog {
 
@@ -69,6 +71,14 @@ public class AddProductoDialog extends JDialog {
 		}
 
 		txtNombre = new JTextField();
+		txtNombre.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(txtNombre.getText().length()>49 && !e.isActionKey()) {
+					e.consume();
+				}
+			}
+		});
 		txtNombre.setBounds(80, 8, 140, 20);
 		contentPanel.add(txtNombre);
 		txtNombre.setColumns(10);
@@ -76,6 +86,15 @@ public class AddProductoDialog extends JDialog {
 		JLabel lblNewLabel = new JLabel("Nombre");
 		lblNewLabel.setBounds(10, 11, 60, 14);
 		contentPanel.add(lblNewLabel);
+		txtPrecio.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if((e.getKeyChar()<'0' || e.getKeyChar()>'9') && !(e.getKeyChar()=='.' && !txtPrecio.getText().contains(".")) && !e.isActionKey()) {
+					e.consume();
+				}
+			}
+		});
 
 		txtPrecio.setBounds(80, 39, 140, 20);
 		contentPanel.add(txtPrecio);
@@ -123,9 +142,18 @@ public class AddProductoDialog extends JDialog {
 	
 	//Añade un producto a la base de datos
 	private void addProducto() {
+		
+		String nombre = txtNombre.getText().strip();
+		
+		if(nombre.isBlank()) {
+			JOptionPane.showMessageDialog(self, "No se puede crear un producto sin nombre", "Error",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
 		String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
 		if (ProductoController.createUpdateProducto(
-				new Producto(txtNombre.getText(), Double.parseDouble(txtPrecio.getText()), dni))) {
+				new Producto(nombre, Double.parseDouble(txtPrecio.getText()), dni))) {
 			JOptionPane.showMessageDialog(self, "Producto creado con éxito", "Éxito",
 					JOptionPane.INFORMATION_MESSAGE);
 			self.dispose();

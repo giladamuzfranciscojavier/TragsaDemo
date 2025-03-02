@@ -20,6 +20,7 @@ public class ProductoTableDialog extends JDialog {
 	
 	private ProductoTableDialog self;
 	private JTable table;
+	private JButton btnBorrarProducto;
 
 	private MainMenu parent;
 
@@ -53,7 +54,7 @@ public class ProductoTableDialog extends JDialog {
 		btnAddProducto.setBounds(274, 41, 150, 23);
 		getContentPane().add(btnAddProducto);
 		
-		JButton btnBorrarProducto = new JButton("Borrar Producto");
+		btnBorrarProducto = new JButton("Borrar Producto");
 		btnBorrarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				borraProducto();
@@ -83,6 +84,8 @@ public class ProductoTableDialog extends JDialog {
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
 			self.dispose();
 		}
+		
+		btnBorrarProducto.setEnabled(!list.isEmpty());
 		
 		list.forEach((it)->{dtm.addRow(new String[] {String.valueOf(it.getProducto_ID()), it.getNombre(), String.valueOf(it.getPrecio()), it.getProveedor_dni()});});
 		

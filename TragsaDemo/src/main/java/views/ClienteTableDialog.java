@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controllers.ClienteController;
 import controllers.ProductoController;
 import controllers.UsuarioController;
 import models.usuarios.Usuario;
@@ -22,7 +23,7 @@ public class ClienteTableDialog extends JDialog{
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private JButton btnDeleteCliente;
-	private JButton btnNewButton_2;
+	private JButton btnComprarProducto;
 	private JButton btnProductosComprados;
 	private MainMenu parent;
 	
@@ -65,19 +66,19 @@ public class ClienteTableDialog extends JDialog{
 		btnProductosComprados.setBounds(290, 35, 200, 23);
 		btnProductosComprados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ProductosCompradosDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
+				showProductosComprados();
 			}
 		});
 		contentPanel.add(btnProductosComprados);
 		
-		btnNewButton_2 = new JButton("Comprar Producto");
-		btnNewButton_2.setBounds(339, 87, 151, 23);
-		btnNewButton_2.addActionListener(new ActionListener() {
+		btnComprarProducto = new JButton("Comprar Producto");
+		btnComprarProducto.setBounds(339, 87, 151, 23);
+		btnComprarProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showComprarProductoDialog(parent);
 			}
 		});
-		contentPanel.add(btnNewButton_2);
+		contentPanel.add(btnComprarProducto);
 		{
 			table = new JTable();
 			table.setBounds(5, 121, 485, 236);
@@ -105,6 +106,10 @@ public class ClienteTableDialog extends JDialog{
 			JOptionPane.showMessageDialog(parent, "Se ha perdido la conexión con la base de datos", "Error", JOptionPane.WARNING_MESSAGE);
 			self.dispose();
 		}
+		
+		btnDeleteCliente.setEnabled(!list.isEmpty());
+		btnComprarProducto.setEnabled(!list.isEmpty());
+		btnProductosComprados.setEnabled(!list.isEmpty());
 		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});
 		table.setModel(dtm);
@@ -136,6 +141,19 @@ public class ClienteTableDialog extends JDialog{
 		}
 		else {
 			JOptionPane.showMessageDialog(parent, "No hay productos disponibles para comprar", "Error",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	
+	
+	
+	//Muestra los productos comprados por el cliente. En caso de no haber no hace nada
+	private void showProductosComprados() {
+		if(!ClienteController.listProductosComprados("").isEmpty()) {
+			new ProductosCompradosDialog(self, table.getModel().getValueAt(table.getSelectedRow(), 0).toString()).setVisible(true);
+		}
+		else {
+			JOptionPane.showMessageDialog(parent, "El cliente no ha comprado ningún producto", "Error",
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}

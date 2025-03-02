@@ -101,6 +101,8 @@ public class ProveedorTableDialog extends JDialog{
 			self.dispose();
 		}
 		
+		btnDeleteProveedor.setEnabled(!list.isEmpty());
+		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});
 		table.setModel(dtm);
 		

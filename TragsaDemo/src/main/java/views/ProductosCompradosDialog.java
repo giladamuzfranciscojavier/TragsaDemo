@@ -84,6 +84,14 @@ public class ProductosCompradosDialog extends JDialog {
 			self.dispose();
 		}
 		
+		if(list.isEmpty()) {
+			if (list.isEmpty()) {
+				JOptionPane.showMessageDialog(parent, "El cliente no ha comprado ningún producto", "Error",
+						JOptionPane.WARNING_MESSAGE);
+				self.dispose();
+			}
+		}
+		
 		list.forEach((it)->{dtm.addRow(new String[] {String.valueOf(it.getProducto_ID()), it.getNombre(), String.valueOf(it.getPrecio()), it.getProveedor_dni()});});
 		
 		table.setModel(dtm);

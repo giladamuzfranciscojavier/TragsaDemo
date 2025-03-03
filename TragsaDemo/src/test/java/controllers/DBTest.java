@@ -22,7 +22,7 @@ class DBTest {
 	@BeforeAll
 	static void setupDB() {	
 		assertDoesNotThrow(() -> {			
-			return DBController.connect("127.0.0.1:3306", DBController.USER, DBController.PSWD, false);
+			return DBController.connect("127.0.0.1:3306", DBController.USER, DBController.PSWD, true);
 		}, "Error de Conexión");		
 	}
 	

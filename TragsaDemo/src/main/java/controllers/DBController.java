@@ -21,7 +21,7 @@ public class DBController {
 		try {			
 			conn = DriverManager.getConnection(DRIVER+url, user, pswd);			
 			System.out.println("Exito al conectar con la base de datos");
-			generateDB(false);
+			generateDB(test);
 			
 		}
 		catch(Exception ex) {

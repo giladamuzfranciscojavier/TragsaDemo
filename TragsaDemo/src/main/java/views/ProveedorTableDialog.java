@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.UsuarioController;
+import models.usuarios.Cliente;
 import models.usuarios.Usuario;
 
 import java.awt.GridBagLayout;
@@ -29,6 +30,7 @@ public class ProveedorTableDialog extends JDialog{
 	private MainMenu parent;
 	
 	private ProveedorTableDialog self;
+	private JButton btnUpdateProveedor;
 
 	public ProveedorTableDialog(MainMenu parent) {
 		super(parent,true);
@@ -42,16 +44,16 @@ public class ProveedorTableDialog extends JDialog{
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JButton btnAddCliente = new JButton("Añadir Proveedor");
-		btnAddCliente.setBounds(10, 35, 150, 23);
-		btnAddCliente.addActionListener(new ActionListener() {
+		JButton btnAddProveedor = new JButton("Añadir Proveedor");
+		btnAddProveedor.setBounds(10, 35, 150, 23);
+		btnAddProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new AddUsuarioDialog(self, false, true).setVisible(true);
 				refreshTable();
 			}
 		});
 		contentPanel.setLayout(null);
-		contentPanel.add(btnAddCliente);
+		contentPanel.add(btnAddProveedor);
 		
 		btnDeleteProveedor = new JButton("Borrar Proveedor");
 		btnDeleteProveedor.setBounds(334, 35, 150, 23);
@@ -79,6 +81,18 @@ public class ProveedorTableDialog extends JDialog{
 			contentPanel.add(table);
 		}
 		
+		btnUpdateProveedor = new JButton("Editar Proveedor");
+		btnUpdateProveedor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
+				String nombre = table.getModel().getValueAt(table.getSelectedRow(), 1).toString();
+				new UpdateUsuarioDialog(self, new Cliente(dni,nombre)).setVisible(true);
+				refreshTable();
+			}
+		});
+		btnUpdateProveedor.setBounds(174, 35, 150, 23);
+		contentPanel.add(btnUpdateProveedor);
+		
 		refreshTable();
 				
 	}
@@ -102,6 +116,7 @@ public class ProveedorTableDialog extends JDialog{
 		}
 		
 		btnDeleteProveedor.setEnabled(!list.isEmpty());
+		btnUpdateProveedor.setEnabled(!list.isEmpty());
 		
 		list.forEach((it)->{dtm.addRow(new String[] {it.getDNI(), it.getNombre()});});
 		table.setModel(dtm);

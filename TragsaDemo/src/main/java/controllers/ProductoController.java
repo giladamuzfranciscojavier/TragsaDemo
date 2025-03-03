@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,26 @@ public class ProductoController {
 			
 			
 			if(producto.getProducto_ID()>0 && ProductoController.readProducto(producto.getProducto_ID()).equals(producto)) {
-				ps = DBController.conn.prepareStatement("UPDATE producto SET nombre=?, precio=?,cliente_dni=? WHERE producto_id=?");
-				ps.setString(1, producto.getNombre());
+				ps = DBController.conn.prepareStatement("UPDATE producto SET nombre=?, precio=?, proveedor_dni=?, cliente_dni=? WHERE producto_id=?");
+				ps.setString(1, producto.getNombre());				
 				ps.setDouble(2, producto.getPrecio());
-				ps.setString(3, producto.getCliente_dni()!=null?producto.getCliente_dni():null);
-				ps.setInt(4, producto.getProducto_ID());
+				ps.setString(3, producto.getProveedor_dni());
+				
+				//Por alguna razón en lugar de ser un tipo null tiene el valor "null"
+				if(producto.getCliente_dni()!=null && !producto.getCliente_dni().equals("null")) {
+					ps.setString(4, producto.getCliente_dni());
+				}
+				else {
+					ps.setNull(4, Types.VARCHAR);
+				}
+				ps.setInt(5, producto.getProducto_ID());
 				ps.executeUpdate();
+				
+				
+				if(producto.getCliente_dni()!=null) {
+					ps.setString(1, producto.getCliente_dni());
+				}
+				
 			}
 			
 			else {

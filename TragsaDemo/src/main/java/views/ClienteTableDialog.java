@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import controllers.ClienteController;
 import controllers.ProductoController;
 import controllers.UsuarioController;
-import models.usuarios.Usuario;
+import models.usuarios.*;
 
 import javax.swing.JTable;
 import java.util.List;
@@ -25,6 +25,7 @@ public class ClienteTableDialog extends JDialog{
 	private JButton btnDeleteCliente;
 	private JButton btnComprarProducto;
 	private JButton btnProductosComprados;
+	private JButton btnUpdateCliente;
 	private MainMenu parent;
 	
 	private ClienteTableDialog self;
@@ -85,6 +86,18 @@ public class ClienteTableDialog extends JDialog{
 			contentPanel.add(table);
 		}
 		
+		btnUpdateCliente = new JButton("Editar Cliente");
+		btnUpdateCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				String dni = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
+				String nombre = table.getModel().getValueAt(table.getSelectedRow(), 1).toString();
+				new UpdateUsuarioDialog(self, new Cliente(dni,nombre)).setVisible(true);
+				refreshTable();
+			}
+		});
+		btnUpdateCliente.setBounds(144, 87, 124, 23);
+		contentPanel.add(btnUpdateCliente);
+		
 		refreshTable();
 				
 	}
@@ -107,6 +120,7 @@ public class ClienteTableDialog extends JDialog{
 			self.dispose();
 		}
 		
+		btnUpdateCliente.setEnabled(!list.isEmpty());
 		btnDeleteCliente.setEnabled(!list.isEmpty());
 		btnComprarProducto.setEnabled(!list.isEmpty());
 		btnProductosComprados.setEnabled(!list.isEmpty());

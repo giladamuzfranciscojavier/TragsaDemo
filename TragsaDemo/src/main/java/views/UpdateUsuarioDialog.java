@@ -1,7 +1,6 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,42 +15,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class AddUsuarioDialog extends JDialog {
+public class UpdateUsuarioDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtdni;
 	private JTextField txtnombre;
-	JCheckBox chckbxAddAsOther = new JCheckBox("");
 	
-	private AddUsuarioDialog self;
+	private UpdateUsuarioDialog self;
 	
-	private boolean cliente;
-	private boolean proveedor;
-
  
-	public AddUsuarioDialog(JDialog parent, boolean cliente, boolean proveedor) {
+	public UpdateUsuarioDialog(JDialog parent, Usuario usuario) {
 		super(parent,true);
 		setResizable(false);
 		
-		//Ajusta el título y el texto de la checkbox en base al origen
-		if(cliente) {
-			setTitle("Añadir Cliente");
-			chckbxAddAsOther.setText("Añadir también como Proveedor");
-		}
-		else if(proveedor) {
-			setTitle("Añadir Proveedor");
-			chckbxAddAsOther.setText("Añadir también como Cliente");
-		}
+		setTitle("Editar Usuario");
 		
 		self=this;
 		setBounds(100, 100, 321, 232);
@@ -66,6 +49,7 @@ public class AddUsuarioDialog extends JDialog {
 		}
 		{
 			txtdni = new JTextField();
+			txtdni.setEnabled(false);
 			txtdni.getInputMap().put(KeyStroke.getKeyStroke("control V"), "none");
 			txtdni.addKeyListener(new KeyAdapter() {
 				@Override
@@ -100,16 +84,12 @@ public class AddUsuarioDialog extends JDialog {
 			contentPanel.add(txtnombre);
 		}
 		{
-			chckbxAddAsOther.setBounds(69, 106, 226, 21);
-			contentPanel.add(chckbxAddAsOther);
-		}
-		{
 			JButton okButton = new JButton("Aceptar");
 			okButton.setBounds(103, 147, 91, 23);
 			contentPanel.add(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					addUsuario(cliente, proveedor);						
+					addUsuario();						
 				}
 
 				
@@ -128,21 +108,18 @@ public class AddUsuarioDialog extends JDialog {
 			contentPanel.add(cancelButton);
 			cancelButton.setActionCommand("Cancel");
 		}
+		txtdni.setText(usuario.getDNI());
+		txtnombre.setText(usuario.getNombre());
 	}
 	
 	
 	//Añade un usuario de un tipo o de ambos
-	private void addUsuario(boolean cliente, boolean proveedor) {
-		
-		//Si ya existe el usuario no hace nada
-		if(UsuarioController.readUsuario(cliente, proveedor, txtdni.getText())!=null) {
-			JOptionPane.showMessageDialog(self, "Ya existe ese usuario","Error", JOptionPane.WARNING_MESSAGE);
-		}
-		
+	private void addUsuario() {
+				
 		String nombre = txtnombre.getText().strip();
-		String dni = txtdni.getText().strip();
+		String dni = txtdni.getText();
 		
-		if(nombre.isBlank() || dni.isBlank()) {
+		if(nombre.isBlank()) {
 			JOptionPane.showMessageDialog(self, "Comprueba que no queden campos sin cubrir", "Error",
 					JOptionPane.WARNING_MESSAGE);
 			return;
@@ -150,26 +127,12 @@ public class AddUsuarioDialog extends JDialog {
 		
 		else {			
 			
-			//Si la checkbox está marcada se añade como ambos tipos
-			if(chckbxAddAsOther.isSelected()) {
-				if(UsuarioController.createUpdateUsuario(true, true, new ClienteProveedor(dni, nombre))) {
-					JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
-					self.dispose();
-				}
-				else {
-					JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
-				}
+			if(UsuarioController.createUpdateUsuario(true, true, new ClienteProveedor(dni, nombre))) {
+				JOptionPane.showMessageDialog(self, "Usuario editado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
+				self.dispose();
 			}
-			
-			//Si no está marcada se añade como el tipo correspondiente al origen
 			else {
-				if(UsuarioController.createUpdateUsuario(cliente, proveedor, new Cliente(txtdni.getText(), txtnombre.getText()))) {
-					JOptionPane.showMessageDialog(self, "Usuario creado con éxito","Éxito", JOptionPane.INFORMATION_MESSAGE);
-					self.dispose();
-				}	
-				else {
-					JOptionPane.showMessageDialog(self, "Error al crear el usuario","Error", JOptionPane.WARNING_MESSAGE);
-				}							
+				JOptionPane.showMessageDialog(self, "Error al editar el usuario","Error", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}

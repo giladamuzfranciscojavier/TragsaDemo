@@ -66,7 +66,7 @@ class DBTest {
 				"Operaciones CRUD Producto",
 				()-> assertTrue(ProductoController.createUpdateProducto(pr)),
 				()-> assertTrue(ProductoController.readProducto(1).getNombre().equals(pr.getNombre())),
-				()-> assertTrue(ProductoController.createUpdateProducto(new Producto(1, "Otra Cosa", 9.99, pr.getProveedor_dni()))),
+				()-> assertTrue(ProductoController.createUpdateProducto(new Producto(1, "Otra Cosa", 9.99, pr.getProveedor_dni(),null))),
 				()-> assertTrue(ProductoController.readProducto(1).getNombre().equals("Otra Cosa")),
 				()-> assertTrue(ProductoController.deleteProducto(1)),
 				()-> assertTrue(ProductoController.readProducto(1)==null)

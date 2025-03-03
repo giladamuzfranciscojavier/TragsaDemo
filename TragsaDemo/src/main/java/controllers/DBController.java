@@ -16,7 +16,7 @@ public class DBController {
 	
 	
 	//Conecta con la base de datos en la url con las credenciales indicadas
-	public static boolean connect(String url, String user, String pswd) {
+	public static boolean connect(String url, String user, String pswd, boolean test) {
 				
 		try {			
 			conn = DriverManager.getConnection(DRIVER+url, user, pswd);			

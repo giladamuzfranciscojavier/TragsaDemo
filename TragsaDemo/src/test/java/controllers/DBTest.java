@@ -22,11 +22,8 @@ class DBTest {
 	@BeforeAll
 	static void setupDB() {	
 		assertDoesNotThrow(() -> {			
-			return DBController.connect("127.0.0.1:3306", DBController.USER, DBController.PSWD);
-		}, "Error de Conexión");
-		
-		assertTrue(DBController.generateDB(true));
-		
+			return DBController.connect("127.0.0.1:3306", DBController.USER, DBController.PSWD, false);
+		}, "Error de Conexión");		
 	}
 	
 	//Comprueba que las operaciones CRUD se realizan correctamente. 

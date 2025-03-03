@@ -130,7 +130,7 @@ public class DBLogin extends JDialog {
 	
 	//Trata de conectar con la base de datos. En caso de conseguirlo desbloquea los botones del menú principal
 	private void connect(MainMenu parent) {
-		if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()))) {
+		if(DBController.connect(url.getText(),user.getText(), String.valueOf(pswd.getPassword()), false)) {
 			JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
 			parent.toggleEnabledButtons(true);
 			self.dispose();

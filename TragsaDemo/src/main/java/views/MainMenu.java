@@ -154,7 +154,7 @@ public class MainMenu extends JFrame {
 	
 	//Método para conectar con la base de datos con las credenciales por defecto. Simplifica enormemente las pruebas de interfaz
 	private void fastConnect() {
-		if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD)) {
+		if(DBController.connect(DBController.URL,DBController.USER, DBController.PSWD, false)) {
 			JOptionPane.showMessageDialog(null, "Exito al conectar con la base de datos", "Conectado", JOptionPane.PLAIN_MESSAGE);
 			toggleEnabledButtons(true);
 		}

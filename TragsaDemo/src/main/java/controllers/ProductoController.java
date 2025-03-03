@@ -28,7 +28,7 @@ public class ProductoController {
 				ps.setDouble(2, producto.getPrecio());
 				ps.setString(3, producto.getProveedor_dni());
 				
-				//Por alguna razón en lugar de ser un tipo null tiene el valor "null"
+				//Al obtener el valor de la tabla de datos lo hace como un string con valor "null", en lugar de un tipo null
 				if(producto.getCliente_dni()!=null && !producto.getCliente_dni().equals("null")) {
 					ps.setString(4, producto.getCliente_dni());
 				}
